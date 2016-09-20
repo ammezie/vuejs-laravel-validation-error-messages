@@ -11910,7 +11910,7 @@ new _vue2.default({
     createPost: function createPost() {
       var post = this.post;
 
-      this.$set('post', post);
+      // this.$set('post', post);
 
       this.$http.post('create-post', post).then(function (response) {
         // post created successfully

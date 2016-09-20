@@ -1,24 +1,26 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 
+// tell Vue to use the vue-resource plugin
 Vue.use(VueResource);
 
+// import FormError component
 import FormError from './components/FormError.vue';
-import Notification from './components/Notification.vue';
 
+// get csrf token
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+// instantiate a new Vue instance
 new Vue({
+    // mount Vue to .container
     el: '.container',
 
+   // define components
     components: {
     	FormError,
-    	Notification,
     },
 
     data: {
-    	posts: [],
-
     	post: {
     		title: '',
     		body: '',
@@ -26,27 +28,16 @@ new Vue({
 
     	submitted: false,
 
+	    // array to hold form errors
     	errors: [],
     },
-
-    ready: function() {
-    	this.getPosts();
-    },
-
+	
     methods: {
-    	getPosts() {
-			this.$http.get('/').then(function(response) {
-				this.$set('posts', response.data);
-			});
-		},
-
     	createPost() {
 			let post = this.post;
-
-			this.$set('post', post);
-
+			
 			this.$http.post('create-post', post).then(function(response) {
-				// post created successfully
+				// form submission successful, reset post data and set submitted to true
 				this.post = {
 					title: '',
 					body: '',
@@ -54,7 +45,7 @@ new Vue({
 				
 				this.submitted = true;
 			}, function (response) {
-				// post not created
+			    // form submission failed, pass form  errors to errors array
 				this.$set('errors', response.data);
 			});
 		}
