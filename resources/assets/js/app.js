@@ -31,20 +31,23 @@ new Vue({
 	    // array to hold form errors
     	errors: [],
     },
-	
+
     methods: {
     	createPost() {
 			let post = this.post;
-			
+
 			this.$http.post('create-post', post).then(function(response) {
 				// form submission successful, reset post data and set submitted to true
 				this.post = {
 					title: '',
 					body: '',
 				};
-				
+
+                // clear previous form errors
+                this.$set('errors', '');
+
 				this.submitted = true;
-			}, function (response) {
+			}, function(response) {
 			    // form submission failed, pass form  errors to errors array
 				this.$set('errors', response.data);
 			});

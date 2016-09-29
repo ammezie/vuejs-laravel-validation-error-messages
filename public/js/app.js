@@ -11866,27 +11866,28 @@ var _FormError = require('./components/FormError.vue');
 
 var _FormError2 = _interopRequireDefault(_FormError);
 
-var _Notification = require('./components/Notification.vue');
-
-var _Notification2 = _interopRequireDefault(_Notification);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// tell Vue to use the vue-resource plugin
 _vue2.default.use(_vueResource2.default);
 
+// import FormError component
+
+
+// get csrf token
 _vue2.default.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
 
+// instantiate a new Vue instance
 new _vue2.default({
+  // mount Vue to .container
   el: '.container',
 
+  // define components
   components: {
-    FormError: _FormError2.default,
-    Notification: _Notification2.default
+    FormError: _FormError2.default
   },
 
   data: {
-    posts: [],
-
     post: {
       title: '',
       body: ''
@@ -11894,41 +11895,34 @@ new _vue2.default({
 
     submitted: false,
 
+    // array to hold form errors
     errors: []
   },
 
-  ready: function ready() {
-    this.getPosts();
-  },
-
   methods: {
-    getPosts: function getPosts() {
-      this.$http.get('/').then(function (response) {
-        this.$set('posts', response.data);
-      });
-    },
     createPost: function createPost() {
       var post = this.post;
 
-      // this.$set('post', post);
-
       this.$http.post('create-post', post).then(function (response) {
-        // post created successfully
+        // form submission successful, reset post data and set submitted to true
         this.post = {
           title: '',
           body: ''
         };
 
+        // clear previous form errors
+        this.$set('errors', '');
+
         this.submitted = true;
       }, function (response) {
-        // post not created
+        // form submission failed, pass form  errors to errors array
         this.$set('errors', response.data);
       });
     }
   }
 });
 
-},{"./components/FormError.vue":6,"./components/Notification.vue":7,"vue":4,"vue-resource":3}],6:[function(require,module,exports){
+},{"./components/FormError.vue":6,"vue":4,"vue-resource":3}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11938,7 +11932,7 @@ exports.default = {
 	props: ['errors']
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<span class=\"help-block\">\n\t<slot></slot>\n</span>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<span class=\"help-block\">\n        <!-- this will be replaced by the error messages -->\n\t\t<slot></slot>\n\t</span>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -11947,27 +11941,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.createRecord("_v-3f82111e", module.exports)
   } else {
     hotAPI.update("_v-3f82111e", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
-  }
-})()}
-},{"vue":4,"vue-hot-reload-api":2}],7:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-exports.default = {
-	props: ['message']
-};
-if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n\t<div class=\"alert alert-success\">\n        <slot></slot>\n    </div>\n"
-if (module.hot) {(function () {  module.hot.accept()
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), true)
-  if (!hotAPI.compatible) return
-  if (!module.hot.data) {
-    hotAPI.createRecord("_v-1ff1feae", module.exports)
-  } else {
-    hotAPI.update("_v-1ff1feae", module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
 },{"vue":4,"vue-hot-reload-api":2}]},{},[5]);
