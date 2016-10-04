@@ -10,7 +10,17 @@ If you use https, use this instead
 
 `git clone https://github.com/ammezie/vuejs-laravel-validation-error-messages.git`
 
-run
+After cloning,run:
+
+`composer install`
+
+Duplicate `.env.example` and rename it `.env`
+
+Then run:
+
+`php artisan key:generate`
+
+And finally, start the application:
 
 `php artisan serve`
 
